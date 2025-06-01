@@ -1,9 +1,24 @@
-## 1. Реализация Builder для UIAlertController
-### Шаг 1: Продукт (UIAlertController)
-Это то, что мы будем строить.
+**Паттерн Builder (строитель)** идеально подходит для пошагового создания сложных объектов, особенно когда у объекта много опциональных параметров.  
 
-### Шаг 2: Builder
-Класс, который позволяет конфигурировать UIAlertController шаг за шагом.
+### **Builder в Swift: Реальный пример из iOS**  
+#### **Задача:**  
+Допустим, мы разрабатываем систему оповещений, где можно гибко настраивать:  
+- Текст заголовка и сообщения.  
+- Цвет кнопок.  
+- Наличие иконки.  
+- Действия при нажатии.  
+
+Вместо гигантского `init` с десятком параметров или цепочки сеттеров, используем **Builder**!  
+
+---
+
+## **1. Реализация Builder для UIAlertController**  
+
+### **Шаг 1: Продукт (UIAlertController)**  
+Это то, что мы будем строить.  
+
+### **Шаг 2: Builder**  
+Класс, который позволяет конфигурировать `UIAlertController` шаг за шагом.  
 
 ```swift
 import UIKit
@@ -78,9 +93,11 @@ final class AlertBuilder {
 }
 ```
 
-## 2. Использование Builder в коде
-### Пример 1: Простое уведомление
+---
 
+## **2. Использование Builder в коде**  
+
+### **Пример 1: Простое уведомление**  
 ```swift
 let alert = AlertBuilder()
     .setTitle("Внимание!")
@@ -94,8 +111,7 @@ let alert = AlertBuilder()
 present(alert, animated: true)
 ```
 
-### Пример 2: Кастомный Alert с иконкой
-
+### **Пример 2: Кастомный Alert с иконкой**  
 ```swift
 let customAlert = AlertBuilder()
     .setTitle("Успех!")
@@ -110,8 +126,7 @@ let customAlert = AlertBuilder()
 present(customAlert, animated: true)
 ```
 
-### Пример 3: Action Sheet
-
+### **Пример 3: Action Sheet**  
 ```swift
 let actionSheet = AlertBuilder()
     .setTitle("Выберите действие")
@@ -128,14 +143,38 @@ let actionSheet = AlertBuilder()
 present(actionSheet, animated: true)
 ```
 
-## Где ещё применяется Builder в iOS?
+---
 
-### Конфигурация URLRequest:
+## **Плюсы и минусы Builder в iOS**  
 
-```swift
-let request = URLRequestBuilder()
-    .setURL("https://api.example.com/users")
-    .setMethod(.get)
-    .addHeader("Authorization", "Bearer token")
-    .build()
-```
+✅ **Плюсы:**  
+- **Гибкость** – можно пропускать необязательные параметры.  
+- **Читаемость** – код выглядит как "цепочка инструкций".  
+- **Избегаем "распухания" `init`** – особенно полезно для объектов с 5+ параметрами.  
+
+❌ **Минусы:**  
+- **Незначительное усложнение кода** – требуется писать Builder-класс.  
+- **Не подходит для простых объектов** – если параметров 1-2, Builder избыточен.  
+
+---
+
+## **Где ещё применяется Builder в iOS?**  
+1. **Конфигурация `URLRequest`:**  
+   ```swift
+   let request = URLRequestBuilder()
+       .setURL("https://api.example.com/users")
+       .setMethod(.get)
+       .addHeader("Authorization", "Bearer token")
+       .build()
+   ```
+
+2. **Построение сложных `UIView`:**  
+   Например, кастомные карточки с опциональными элементами (иконки, кнопки, тени).  
+
+3. **Настройка `CoreData` или `Realm` моделей** при миграциях.  
+
+---
+
+## **Сравнение с Factory**  
+- **Factory** – создаёт готовый объект "одним вызовом".  
+- **Builder** – позволяет настраивать объект шаг за шагом.  
